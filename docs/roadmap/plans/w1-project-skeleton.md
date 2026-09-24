@@ -53,7 +53,7 @@ Branch `feature/w1-project-skeleton`, stacked on `spec/m3-web-foundation-docs`.
 
 - [x] This plan.
 - [x] pnpm, Vite, React and strict TypeScript; ESLint, Prettier and Vitest.
-- [ ] Tailwind theme with light and dark tokens, layout, router with a stub for
+- [x] Tailwind theme with light and dark tokens, layout, router with a stub for
       every screen, connection state and the offline indicator.
 - [x] Translation layer with English, Russian and Ukrainian.
 - [ ] `openapi/openapi.json`, generated types and the API client.

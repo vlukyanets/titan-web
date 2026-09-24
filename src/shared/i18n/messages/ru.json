@@ -1,3 +1,27 @@
 {
-  "app.name": "TITAN"
+  "app.name": "TITAN",
+  "app.skipToContent": "Перейти к содержимому",
+  "document.title": "{screen} · TITAN",
+  "nav.label": "Главное меню",
+  "nav.today": "Сегодня",
+  "nav.chat": "Чат",
+  "nav.tasks": "Задачи",
+  "nav.calendar": "Календарь",
+  "nav.notes": "Заметки",
+  "nav.trackers": "Трекеры",
+  "nav.reminders": "Напоминания",
+  "nav.notifications": "Уведомления",
+  "nav.activity": "Журнал действий",
+  "nav.settings": "Настройки",
+  "nav.household": "Семья",
+  "connection.offline": "Нет связи",
+  "connection.offlineDescription": "Узел недоступен. Всё, что на экране, останется, а когда связь вернётся, данные обновятся.",
+  "theme.label": "Тема",
+  "theme.system": "Как в системе",
+  "theme.light": "Светлая",
+  "theme.dark": "Тёмная",
+  "screen.placeholder": "Этот экран появится в одной из следующих версий.",
+  "notFound.title": "Страница не найдена",
+  "notFound.body": "По этому адресу ничего нет.",
+  "notFound.home": "Перейти к «Сегодня»"
 }

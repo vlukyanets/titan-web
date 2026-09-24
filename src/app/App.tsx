@@ -1,11 +1,16 @@
-import { FormattedMessage } from 'react-intl';
+import { QueryClientProvider, type QueryClient } from '@tanstack/react-query';
+import { RouterProvider } from '@tanstack/react-router';
+import type { AppRouter } from './router.tsx';
 
-export function App() {
+interface AppProps {
+  queryClient: QueryClient;
+  router: AppRouter;
+}
+
+export function App({ queryClient, router }: AppProps) {
   return (
-    <main>
-      <h1>
-        <FormattedMessage id="app.name" />
-      </h1>
-    </main>
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
   );
 }
