@@ -20,7 +20,9 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "pnpm run generate && vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "e2e": "playwright test",
+    "release:archive": "sh scripts/release-archive.sh"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.103.2",
@@ -36,6 +38,7 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@formatjs/icu-messageformat-parser": "^3.5.20",
+    "@playwright/test": "^1.63.0",
     "@tailwindcss/vite": "^4.3.3",
     "@tanstack/eslint-plugin-query": "^5.103.2",
     "@testing-library/jest-dom": "^7.0.1",

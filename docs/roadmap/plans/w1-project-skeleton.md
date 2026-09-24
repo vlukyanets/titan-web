@@ -57,6 +57,7 @@ Branch `feature/w1-project-skeleton`, stacked on `spec/m3-web-foundation-docs`.
       every screen, connection state and the offline indicator.
 - [x] Translation layer with English, Russian and Ukrainian.
 - [x] `openapi/openapi.json`, generated types and the API client.
-- [ ] Playwright smoke test under the strict CSP.
-- [ ] `CI TITAN Web` workflow and the release archive.
-- [ ] CLAUDE.md commands, README and architecture updated.
+- [x] Playwright smoke test under the strict CSP.
+- [x] `CI TITAN Web` workflow and the release archive.
+- [x] CLAUDE.md commands, README and architecture updated.
+- [ ] CI green on the pull request; then mark W1 done and delete this plan.

@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.e2e.tsbuildinfo",
     "target": "ES2023",
-    "lib": ["ES2023"],
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "moduleResolution": "bundler",
     "moduleDetection": "force",
@@ -22,5 +22,5 @@
     "erasableSyntaxOnly": true,
     "skipLibCheck": true
   },
-  "include": ["vite.config.ts", "playwright.config.ts", "security-headers.ts"]
+  "include": ["e2e"]
 }
