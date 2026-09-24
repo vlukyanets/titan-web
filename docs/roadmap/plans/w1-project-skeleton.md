@@ -52,10 +52,10 @@ Branch `feature/w1-project-skeleton`, stacked on `spec/m3-web-foundation-docs`.
 ## Tasks
 
 - [x] This plan.
-- [ ] pnpm, Vite, React and strict TypeScript; ESLint, Prettier and Vitest.
+- [x] pnpm, Vite, React and strict TypeScript; ESLint, Prettier and Vitest.
 - [ ] Tailwind theme with light and dark tokens, layout, router with a stub for
       every screen, connection state and the offline indicator.
-- [ ] Translation layer with English, Russian and Ukrainian.
+- [x] Translation layer with English, Russian and Ukrainian.
 - [ ] `openapi/openapi.json`, generated types and the API client.
 - [ ] Playwright smoke test under the strict CSP.
 - [ ] `CI TITAN Web` workflow and the release archive.

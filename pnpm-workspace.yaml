@@ -1,0 +1,3 @@
+# Dependency install scripts run only for packages allowed here (ADR 0004).
+# None needs one today.
+allowBuilds: {}

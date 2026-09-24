@@ -1,0 +1,4 @@
+pnpm-lock.yaml
+openapi/openapi.json
+src/shared/api/schema.gen.ts
+*.md
