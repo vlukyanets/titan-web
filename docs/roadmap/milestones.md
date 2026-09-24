@@ -7,15 +7,13 @@ The Web UI is part of backend milestone M3
 
 ## W1: Project skeleton
 
-Waits for the framework decision
-([ADR 0004](../adr/0004-frontend-framework.md)).
-
-- [ ] Project with the chosen framework, strict TypeScript and the layout from
-      the [architecture overview](../architecture/overview.md).
+- [ ] React, Vite and pnpm project with the libraries of
+      [ADR 0004](../adr/0004-frontend-framework.md), strict TypeScript and
+      the layout from the [architecture overview](../architecture/overview.md).
 - [ ] Theme (light and dark), layout scaffold, router, offline indicator.
 - [ ] Translation layer with English, Russian and Ukrainian message files.
-- [ ] Linting, formatting, unit tests, GitHub Actions CI named `CI TITAN Web`
-      (type check, lint, test, build) and a release archive.
+- [ ] ESLint, Prettier, Vitest, a Playwright smoke test, GitHub Actions CI
+      named `CI TITAN Web` (type check, lint, test, build) and a release archive.
 - [ ] Generated API types from a copy of the backend's schema.
 
 Exit: an empty app with navigation builds in CI and its release archive can be
@@ -62,7 +60,6 @@ everyday tasks.
 
 ## Open questions
 
-- Which framework ([ADR 0004](../adr/0004-frontend-framework.md))?
 - Browser push notifications after v1, and through which push service?
 - Should the UI be installable as a Progressive Web App on phones and
   desktops?

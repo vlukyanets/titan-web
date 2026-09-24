@@ -63,13 +63,15 @@ Full rules: [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md). In short:
 
 ## Stack and commands
 
-The framework is still being chosen
-([ADR 0004](docs/adr/0004-frontend-framework.md)) and the project skeleton is
-milestone W1, so there are no commands yet. Update this section when they
-exist.
+The project skeleton is milestone W1, so the commands below are the
+**planned** interface. Update this section when they change.
 
-- TypeScript in strict mode. The build output is static files that a TITAN
-  node serves ([ADR 0002](docs/adr/0002-served-by-the-node.md)).
+- React, Vite and TypeScript in strict mode, with the libraries fixed in
+  [ADR 0004](docs/adr/0004-frontend-framework.md). Do not add alternatives to
+  them. The build output is static files that a TITAN node serves
+  ([ADR 0002](docs/adr/0002-served-by-the-node.md)).
+- pnpm: `pnpm install`, `pnpm dev`, `pnpm build`, `pnpm typecheck`,
+  `pnpm lint`, `pnpm test`, `pnpm e2e`.
 - The GitHub Actions workflow is named `CI TITAN Web` (the backend's is
   `CI TITAN`, the Android app's `CI TITAN Android`).
 - The API client is generated from `openapi/openapi.json`, a copy of the

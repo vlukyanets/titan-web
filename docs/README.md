@@ -24,7 +24,7 @@ backend repository:
 | [0001](adr/0001-record-architecture-decisions.md) | Record architecture decisions | Accepted |
 | [0002](adr/0002-served-by-the-node.md) | The Web UI is served by the TITAN node | Accepted |
 | [0003](adr/0003-openapi-generated-client.md) | API client generated from the backend's OpenAPI schema | Accepted |
-| [0004](adr/0004-frontend-framework.md) | Frontend framework | Proposed |
+| [0004](adr/0004-frontend-framework.md) | Frontend framework: React with Vite | Accepted |
 
 New ADRs start from the [template](adr/0000-template.md).
 

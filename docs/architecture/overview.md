@@ -1,7 +1,6 @@
 # Architecture overview
 
-Status: **Draft**. This is the target architecture for the v1 UI. The
-framework-specific parts wait for [ADR 0004](../adr/0004-frontend-framework.md).
+Status: **Draft**. This is the target architecture for the v1 UI.
 
 ## Deployment
 
@@ -28,16 +27,21 @@ flowchart LR
 | Concern | Choice |
 |---|---|
 | Language | TypeScript, strict mode |
-| Framework, router, components | [ADR 0004](../adr/0004-frontend-framework.md) (open) |
+| Framework | React with Vite ([ADR 0004](../adr/0004-frontend-framework.md)) |
+| Routing and server data | TanStack Router, TanStack Query |
+| Components and styling | shadcn/ui on Radix primitives, Tailwind CSS |
+| Forms | React Hook Form with Zod |
+| Calendar, tables, charts | FullCalendar, TanStack Table, Recharts |
 | API client | Types generated with `openapi-typescript`, calls through `openapi-fetch` ([ADR 0003](../adr/0003-openapi-generated-client.md)) |
 | Streaming | `fetch` with a hand-written `text/event-stream` reader |
 | Authentication | `HttpOnly` session cookie set by the node ([titan ADR 0012](https://github.com/vlukyanets/titan/blob/master/docs/adr/0012-browser-sessions-for-the-web-ui.md)) |
-| Translations | Message files per language, ICU message format |
+| Translations | FormatJS (`react-intl`), ICU message format, one file per language |
+| Tests | Vitest with Testing Library, Playwright end to end |
 | CI | GitHub Actions workflow `CI TITAN Web`: type check, lint, unit tests, build, release archive |
 
 ## Layout
 
-The folder names below are the plan; the framework may rename them.
+The folder names below are the plan.
 
 ```text
 openapi/             copy of the backend's openapi.json
