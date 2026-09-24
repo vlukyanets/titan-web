@@ -18,20 +18,26 @@ app.
 
 ## Serving and signing in
 
-- Every TITAN node serves the Web UI itself, next to its API, on its tailnet
-  address, for example `https://titan-home.example-tailnet.ts.net/`. There is
-  no separate web server and no public endpoint
-  ([ADR 0002](../adr/0002-served-by-the-node.md)).
+- Every TITAN node serves the Web UI itself, next to its API. Users open the
+  cluster address, for example `https://titan.example-tailnet.ts.net/`, which
+  Tailscale connects to the nearest available node. There is no separate web
+  server and no public endpoint
+  ([ADR 0002](../adr/0002-served-by-the-node.md),
+  [titan ADR 0013](https://github.com/vlukyanets/titan/blob/master/docs/adr/0013-one-cluster-address.md)).
 - **No pairing.** The user opens the node's address and signs in with their
   username and password. The node answers with a session cookie that
   JavaScript cannot read. The password is not stored.
 - Each signed-in browser appears as a `web` device in the user's device list,
   named after the browser and system (for example "Firefox on Linux"), and can
   be revoked from any client. Signing out revokes it.
-- A session ends after 30 days without use. The sign-in page then shows again,
-  and the page the user was on opens after signing in.
-- Each node address is its own site: a user who opens another node signs in
-  there too. The UI does not switch nodes on its own.
+- A session ends after 30 days without use, or 90 days after sign-in. The
+  sign-in page then shows again, and the page the user was on opens after
+  signing in. Sensitive changes ask for the password again when the sign-in
+  is older than 15 minutes.
+- **One sign-in covers every node.** All nodes share the cluster address, so
+  the session works whichever node answers. When a node goes down, the next
+  request reaches another one; the user sees at most a cut chat reply, which
+  reloads from the thread.
 - The rules for sessions, cookies and cross-site request protection are in the
   backend's
   [ADR 0012](https://github.com/vlukyanets/titan/blob/master/docs/adr/0012-browser-sessions-for-the-web-ui.md).
@@ -105,6 +111,8 @@ Losing the connection to the node must still not disrupt the user:
   and password opens Today, and the browser appears in the device list.
 - Revoking that device from another client signs the browser out on its next
   request.
+- Stopping the node that served the page keeps the user signed in: the next
+  request is answered by another node without a new sign-in.
 - Chat replies stream token by token, and approval requests can be answered
   inline.
 - Stopping the node leaves the current page content in place, shows and hides

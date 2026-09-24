@@ -53,7 +53,8 @@ Option 1. The UI is built into static files, and every node serves them:
   is enough for a tailnet-only app for a household.
 - A UI release reaches users only through a titan release that pins it. The
   pin says which API the UI was built against, so they never drift apart.
-- Each node address is its own origin, so a user signs in separately on each
-  node they open.
+- Users open the cluster address that all nodes share
+  ([titan ADR 0013](https://github.com/vlukyanets/titan/blob/master/docs/adr/0013-one-cluster-address.md)),
+  so one origin and one sign-in cover every node.
 - titan needs follow-up work: the static route, the settings for a local build,
   and the pinned download in its image.

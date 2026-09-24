@@ -6,17 +6,27 @@ Status: **Draft**. This is the target architecture for the v1 UI.
 
 ```mermaid
 flowchart LR
-    B[Browser on the tailnet] -->|HTTPS| N
-    subgraph N[TITAN node]
-        S[Static route: index.html, /assets]
-        A[API /api/v1]
+    B[Browser on the tailnet] -->|HTTPS| C[Cluster address<br/>titan.tailnet.ts.net]
+    C -->|nearest ready node| N1
+    C -.-> N2
+    subgraph N1[TITAN node]
+        S1[Static route: index.html, /assets]
+        A1[API /api/v1]
     end
-    A --> DB[(Replicated database)]
+    subgraph N2[Another TITAN node]
+        S2[Static route]
+        A2[API]
+    end
+    A1 & A2 --> DB[(Replicated database)]
 ```
 
 - The node serves the built UI and the API on one origin
   ([ADR 0002](../adr/0002-served-by-the-node.md)). The UI never calls another
   host.
+- That origin is the cluster address, a Tailscale Service that every ready
+  node advertises
+  ([titan ADR 0013](https://github.com/vlukyanets/titan/blob/master/docs/adr/0013-one-cluster-address.md)).
+  Failover is Tailscale's job; the UI has no node list.
 - The UI is a static single-page app. Deep links work because the node answers
   `index.html` for every path outside `/api/` and `/assets/`.
 - A titan release pins the UI release it serves, so the UI and the API always
@@ -75,7 +85,11 @@ Feature folders depend on `src/shared/*`, never on each other.
 - Loading indicators are local to the component that loads. A full-page
   spinner is allowed only for the very first load of the app.
 - A `401` from any request clears the cached data and opens the sign-in page,
-  keeping the current address to return to.
+  keeping the current address to return to. Within a minute of signing in, a
+  `401` is first retried once after two seconds, in case the request reached a
+  node before the new session did.
+- A `403` asking for a recent sign-in opens a password prompt and repeats the
+  request after it.
 
 ## Chat streaming
 

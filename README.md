@@ -8,10 +8,11 @@
 
 Chat with your assistant, see today's plan, and manage tasks, the calendar,
 notes and trackers from any browser on your tailnet. The owner also manages the
-household here: members, devices, autonomy policy, usage and budgets. Each
-TITAN node serves the UI itself on its own [Tailscale](https://tailscale.com)
-address, so there is nothing extra to host and nothing to pair: open the node's
-address and sign in with your username and password.
+household here: members, devices, autonomy policy, usage and budgets. Every
+TITAN node serves the UI itself, and all nodes share one
+[Tailscale](https://tailscale.com) address, so there is nothing extra to host
+and nothing to pair: open the cluster address, sign in once with your username
+and password, and keep working when a node goes down.
 
 > **Status:** the project is in its specification phase. There is no runnable
 > code yet. Start with the [Web UI spec](docs/spec/web.md) and the
@@ -33,7 +34,8 @@ address and sign in with your username and password.
 
 ```mermaid
 flowchart LR
-    Browser -->|HTTPS over Tailscale| Node[TITAN node]
+    Browser -->|HTTPS over Tailscale| Addr[Cluster address]
+    Addr -->|nearest ready node| Node[TITAN node]
     Node -->|/| UI[Static files of this UI]
     Node -->|/api/v1 + SSE| API[TITAN API]
 ```
