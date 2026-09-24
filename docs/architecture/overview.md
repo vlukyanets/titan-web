@@ -49,16 +49,21 @@ flowchart LR
 | Tests | Vitest with Testing Library, Playwright end to end |
 | CI | GitHub Actions workflow `CI TITAN Web`: type check, lint, unit tests, build, release archive |
 
-## Layout
+TypeScript stays on 5.9 while `typescript-eslint` and `openapi-typescript` do
+not support TypeScript 7; the manifest's version range says so.
 
-The folder names below are the plan.
+## Layout
 
 ```text
 openapi/             copy of the backend's openapi.json
-src/app/             entry point, router, layout, theme, providers
-src/shared/api/      generated types, client, stream reader, session handling
-src/shared/ui/       shared components, offline indicator
+e2e/                 Playwright tests against the production build
+scripts/             release archive
+src/main.tsx         entry point: theme, connection state, language, render
+src/app/             router, layout, navigation, query client, styles
+src/shared/api/      generated types, client, connection state
+src/shared/ui/       shared components, theme, offline indicator
 src/shared/i18n/     translation layer and message files
+src/shared/lib/      small helpers
 src/features/today/
 src/features/chat/
 src/features/tasks/
@@ -72,7 +77,11 @@ src/features/settings/
 src/features/household/
 ```
 
-Feature folders depend on `src/shared/*`, never on each other.
+Feature folders depend on `src/shared/*`, never on each other, and
+`src/shared` depends on neither features nor `src/app`. ESLint enforces this:
+imports that leave a folder go through the `@/` alias, so the rule can check
+them by name. Routes are declared in code in `src/app/router.tsx`, one per
+screen, and point at the screen component each feature exports.
 
 ## Data flow
 
@@ -82,6 +91,17 @@ Feature folders depend on `src/shared/*`, never on each other.
 - A shared connection state combines failed requests, a light health check
   against `/api/v1/health` while requests fail, and the browser's online and
   offline events. The layout shows the offline indicator from it.
+  - The API client reports every answer to it. A network error, or a `502`,
+    `503` or `504` without a TITAN problem body (so from whatever stands in
+    front of the node), marks the node unreachable; any other answer marks it
+    reachable. Cancelled requests count as neither.
+  - While unreachable, it checks the health endpoint after 2 seconds and then
+    with a doubling delay of up to 30 seconds. The browser's `offline` event
+    marks the node unreachable at once, and its `online` event starts a check
+    right away.
+  - TanStack Query follows this state instead of the browser's: queries
+    pause while the node is unreachable and refetch when it is back.
+    Mutations run regardless and fail at once, so nothing is queued.
 - Loading indicators are local to the component that loads. A full-page
   spinner is allowed only for the very first load of the app.
 - A `401` from any request clears the cached data and opens the sign-in page,
@@ -101,6 +121,34 @@ Feature folders depend on `src/shared/*`, never on each other.
   offline, and reloads the thread when the node answers again; the node keeps
   writing the reply meanwhile.
 
+## Themes and translations
+
+- The light and dark themes are CSS variables named as in shadcn/ui. Dark
+  applies when the system prefers it, unless the user chose a theme by hand;
+  that choice is kept in `localStorage` and set as `data-theme` on `<html>`
+  before the first render.
+- Each language is one JSON file of ICU messages in
+  `src/shared/i18n/messages/`. The app finds the files at build time, loads
+  only the chosen language, and fills gaps from English. Message ids are
+  typed from `en.json`, and a unit test keeps the ids and arguments of every
+  file in step with it. Lint rejects literal text in JSX and in user-facing
+  attributes such as `aria-label`.
+
+## Build and release
+
+- `pnpm build` writes static files to `dist/`: `index.html` and hashed files
+  under `assets/`, which the node serves as ADR 0002 describes. Assets are
+  never inlined as `data:` URLs, because the node's CSP does not allow them.
+- `pnpm release:archive` packs `dist/` into `titan-web-<version>.tar.gz`
+  with the files at the archive's root, sorted, with fixed times and owners,
+  and writes `titan-web-<version>.tar.gz.sha256`. The same commit gives the
+  same hash, which titan's image build pins.
+- CI builds the archive on every run. Pushing the tag `v<version>`, matching
+  `package.json`, publishes the archive and its hash as a GitHub release.
+- The Playwright tests run the production build under the node's headers
+  (`security-headers.ts`) in Chromium, Firefox and WebKit at desktop and
+  phone widths, and fail on any CSP or Trusted Types violation.
+
 ## Security
 
 - The session token is never visible to JavaScript. Requests rely on the
@@ -110,4 +158,8 @@ Feature folders depend on `src/shared/*`, never on each other.
   `Content-Security-Policy` with Trusted Types, so no inline or foreign script
   runs and no HTML string reaches the DOM unsanitised.
 - Text from the server, including the agent's Markdown, is rendered through a
-  sanitising renderer. Raw HTML from the server is never inserted.
+  sanitising renderer. Raw HTML from the server is never inserted: lint
+  rejects `dangerouslySetInnerHTML`, `innerHTML`, `outerHTML`,
+  `insertAdjacentHTML` and `document.write`.
+- Every request carries `X-Titan-Request: 1`, which the node requires on
+  cookie-authenticated writes.

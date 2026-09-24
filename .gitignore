@@ -1,0 +1,12 @@
+node_modules/
+dist/
+*.tsbuildinfo
+*.tar.gz
+*.tar.gz.sha256
+test-results/
+playwright-report/
+.env
+.env.*
+
+# Generated from openapi/openapi.json (ADR 0003); never committed.
+src/shared/api/schema.gen.ts

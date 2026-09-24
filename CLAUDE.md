@@ -63,20 +63,32 @@ Full rules: [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md). In short:
 
 ## Stack and commands
 
-The project skeleton is milestone W1, so the commands below are the
-**planned** interface. Update this section when they change.
-
 - React, Vite and TypeScript in strict mode, with the libraries fixed in
   [ADR 0004](docs/adr/0004-frontend-framework.md). Do not add alternatives to
   them. The build output is static files that a TITAN node serves
   ([ADR 0002](docs/adr/0002-served-by-the-node.md)).
-- pnpm: `pnpm install`, `pnpm dev`, `pnpm build`, `pnpm typecheck`,
-  `pnpm lint`, `pnpm test`, `pnpm e2e`.
+- Node 24 (`.nvmrc`; 22.12 or newer works) and the pnpm version pinned in
+  `package.json`, run through Corepack. Dependency install scripts are allowed
+  only for packages listed under `allowBuilds` in `pnpm-workspace.yaml`, and
+  pnpm's minimum release age stays on: do not add exclusions to it.
+- Commands:
+
+  | Command | Does |
+  |---|---|
+  | `pnpm install` | Installs and generates the API types |
+  | `pnpm dev` | Development server; proxies `/api` to `TITAN_API_URL` (default `http://127.0.0.1:8000`) |
+  | `pnpm typecheck`, `pnpm lint`, `pnpm format:check` | Checks; `pnpm format` rewrites |
+  | `pnpm test` | Unit tests (Vitest) |
+  | `pnpm build` | Production build in `dist/` |
+  | `pnpm e2e` | Playwright against `dist/` served with the node's headers; run `pnpm build` and `pnpm exec playwright install` first |
+  | `pnpm release:archive` | Packs `dist/` into `titan-web-<version>.tar.gz` and its `.sha256` |
+
 - The GitHub Actions workflow is named `CI TITAN Web` (the backend's is
   `CI TITAN`, the Android app's `CI TITAN Android`).
 - The API client is generated from `openapi/openapi.json`, a copy of the
   backend's schema ([ADR 0003](docs/adr/0003-openapi-generated-client.md)).
-  Never edit generated code. Update the schema copy and regenerate.
+  Never edit generated code. Update the schema copy as
+  [openapi/README.md](openapi/README.md) describes and regenerate.
 
 ## Rules for code
 
@@ -88,7 +100,8 @@ The project skeleton is milestone W1, so the commands below are the
 - Every text the user sees goes through the translation layer. Languages are
   not limited to a fixed list.
 - Feature folders do not import from each other; shared code lives in shared
-  folders.
+  folders. Imports that leave a folder use the `@/` alias, and lint enforces
+  the boundaries.
 - Tests come with the change they cover.
 
 ## Security

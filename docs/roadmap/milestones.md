@@ -7,14 +7,16 @@ The Web UI is part of backend milestone M3
 
 ## W1: Project skeleton
 
-- [ ] React, Vite and pnpm project with the libraries of
+[Plan](plans/w1-project-skeleton.md).
+
+- [x] React, Vite and pnpm project with the libraries of
       [ADR 0004](../adr/0004-frontend-framework.md), strict TypeScript and
       the layout from the [architecture overview](../architecture/overview.md).
-- [ ] Theme (light and dark), layout scaffold, router, offline indicator.
-- [ ] Translation layer with English, Russian and Ukrainian message files.
-- [ ] ESLint, Prettier, Vitest, a Playwright smoke test, GitHub Actions CI
+- [x] Theme (light and dark), layout scaffold, router, offline indicator.
+- [x] Translation layer with English, Russian and Ukrainian message files.
+- [x] ESLint, Prettier, Vitest, a Playwright smoke test, GitHub Actions CI
       named `CI TITAN Web` (type check, lint, test, build) and a release archive.
-- [ ] Generated API types from a copy of the backend's schema.
+- [x] Generated API types from a copy of the backend's schema.
 
 Exit: an empty app with navigation builds in CI and its release archive can be
 served by a node.
